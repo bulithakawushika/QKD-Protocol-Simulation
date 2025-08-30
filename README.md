@@ -115,6 +115,7 @@ These features allow **realistic performance evaluation** of QKD protocols in fi
 | **Channel Loss Rate (%)**    | Percentage of qubits lost during transmission. |
 
 Example -
+
 ![Throughput Comparison](https://github.com/bulithakawushika/QKD-Protocol-Simulation-with-NetSquid/blob/main/Advanced%20Protocol%20Set/Sample%20Results%20Plots/A1%20-%20Throughput%20Comparison.png)
 
 ---
