@@ -27,6 +27,29 @@ This project was built to **bridge that gap** by providing:
 
 ---
 
+## 🗂 Repository Structure
+
+| Set                  | Description |
+|----------------------|------------|
+| **Advanced Set**     | Modular implementation with **device-level customization** and **detailed noise models**. Ideal for research experiments. |
+| **Basic Set**        | Lightweight, single-file implementations for quick **demonstrations and testing**. Beginner-friendly. |
+
+Both sets support **performance visualization** with **plots** (e.g., QBER, throughput) for a **10 km optical link**.
+
+---
+
+## 🔧 Technical Details
+
+- **Simulator**: [NetSquid](https://netsquid.org/)  
+- **NetSquid Version Used**: `1.1.1`  
+- **Programming Language**: Python 3.x  
+- **Core Dependencies**:  
+  - `netsquid`  
+  - `numpy`  
+  - `matplotlib`  
+
+---
+
 ## 🔬 Simulator Comparison
 
 | Feature                               | NetSquid                                                                                   | QuNetSim                                                | SimulaQron                                         | Qiskit/Cirq                                          |
@@ -93,28 +116,7 @@ These features allow **realistic performance evaluation** of QKD protocols in fi
 
 ---
 
-## 🗂 Repository Structure
-
-| Set                  | Description |
-|----------------------|------------|
-| **Advanced Set**     | Modular implementation with **device-level customization** and **detailed noise models**. Ideal for research experiments. |
-| **Basic Set**        | Lightweight, single-file implementations for quick **demonstrations and testing**. Beginner-friendly. |
-
-Both sets support **performance visualization** with **plots** (e.g., QBER, throughput) for a **10 km optical link**.
-
----
-
-## 🔧 Technical Details
-
-- **Simulator**: [NetSquid](https://netsquid.org/)  
-- **NetSquid Version Used**: `1.1.1`  
-- **Programming Language**: Python 3.x  
-- **Core Dependencies**:  
-  - `netsquid`  
-  - `numpy`  
-  - `matplotlib`  
-
----
+![Throughput Comparison](https://github.com/bulithakawushika/QKD-Protocol-Simulation-with-NetSquid/blob/main/Advanced%20Protocol%20Set/Sample%20Results%20Plots/A1%20-%20Throughput%20Comparison.png)
 
 ## 📚 Further Reading
 
