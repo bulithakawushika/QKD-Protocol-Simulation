@@ -1,34 +1,33 @@
 # Quantum Key Distribution (QKD) Protocol Simulation with NetSquid
 
-This repository provides **implementations and simulations of BB84, E91, and MDI-QKD quantum key distribution (QKD) protocols** using the [NetSquid](https://netsquid.org/) simulator.  
-It is designed as a **research-oriented toolset** for simulating realistic quantum communication networks, focusing on **physical-layer imperfections, channel noise, and hardware limitations**.
+This repository provides **implementations and simulations of BB84, E91, and MDI-QKD quantum key distribution protocols** using the [NetSquid](https://netsquid.org/) discrete-event simulator.  
+It is designed as a **research-oriented toolset** to simulate **realistic quantum communication networks**, focusing on **physical-layer imperfections, fiber-channel noise, and measurement device limitations**.  
 
 ---
 
 ## 🎯 Motivation
 
 During my final year research project, I identified a major challenge in QKD research:  
-> **A lack of publicly available, accurate, and realistic simulation code for QKD protocols.**
+> **There were no publicly available, accurate, and realistic QKD simulation codes.**  
 
-Most existing QKD simulations either:
-- **Ignore real-world channel noise** and photon loss, or
-- **Simplify QKD logic** without accurately modeling physical components.
+Most open-source QKD simulators:  
+- **Ignore realistic channel noise and photon loss**  
+- **Simplify QKD logic** without true physical modeling  
+- Lack modularity for research-level extension  
 
-Building a real-world QKD system requires **extremely expensive equipment**:
-- Single-photon sources, detectors, and quantum memories
-- Highly precise optical fiber infrastructure
-- Specialized synchronization and error correction systems
+Implementing QKD experimentally requires **expensive hardware**:
+- Single-photon sources, detectors, and entanglement devices  
+- Precision optical fiber setups  
+- Sophisticated synchronization and error correction systems  
 
-As a **cost-effective solution**, I developed this simulation framework using **NetSquid**, a discrete-event simulator capable of:
-- Modeling **physical components** like photon sources, detectors, and quantum memories
-- Simulating **time-dependent noise, decoherence, and photon loss**
-- Designing **scalable quantum communication networks**
-
-This repository is built to **help researchers quickly prototype, evaluate, and extend QKD protocols**.
+This project was built to **bridge that gap** by providing:  
+- **Physically realistic QKD simulations**  
+- **Customizable models** of quantum devices and channels  
+- **Research-ready modular code** for extending QKD protocols  
 
 ---
 
-## 🔬 Why NetSquid?
+## 🔬 Simulator Comparison
 
 | Feature                               | NetSquid                                                                                   | QuNetSim                                                | SimulaQron                                         | Qiskit/Cirq                                          |
 |--------------------------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------|------------------------------------------------------|
@@ -37,67 +36,83 @@ This repository is built to **help researchers quickly prototype, evaluate, and 
 | **Scalability**                      | High: Designed for large network simulations                                              | Moderate: Suitable for small-scale networks            | Limited: Application development focus            | Limited: Focused on individual circuits             |
 | **Key Advantage for QKD Research**   | Essential for simulating **hardware noise** & **channel imperfections**                  | Good for simple network logic                          | Minimal support for physical realism             | Not designed for network-level QKD simulations      |
 
-Reason for Choosing NetSquid: I selected NetSquid over other simulators because it offers high physical-layer realism, detailed noise modeling, and scalability, making it ideal for accurately simulating QKD protocols and channel imperfections.
+> **Why NetSquid?** I selected NetSquid because of its **high physical-layer realism, noise modeling, and scalability**, making it ideal for accurately simulating QKD protocols and quantum network imperfections.
 
 ---
 
 ## 🧩 Implemented QKD Protocols
 
-This project includes **three widely used QKD protocols**:
-
 | Protocol | Description | Reference |
 |----------|-------------|-----------|
-| **BB84** | The first and most widely used QKD protocol, proposed by Bennett and Brassard in 1984. It uses **photon polarization** to establish a shared secret key and relies on quantum mechanics to ensure security. | [Comprehensive Study of BB84](https://www.researchgate.net/publication/370040044_Comprehensive_Study_of_BB84_A_Quantum_Key_Distribution_Protocol) |
-| **E91**  | Proposed by Artur Ekert in 1991, E91 uses **entangled photon pairs** and Bell inequality tests for security verification, making it resistant to eavesdropping. | [Wikipedia - E91 Protocol](https://en.wikipedia.org/wiki/Quantum_key_distribution#E91_protocol:_Artur_Ekert_.281991.29) |
-| **MDI-QKD** | Measurement-Device-Independent QKD addresses detector side-channel attacks by allowing an untrusted relay to perform measurements. It enhances security in practical implementations. | [arXiv:1109.1473](https://arxiv.org/abs/1109.1473) |
+| **BB84** | The first QKD protocol (Bennett & Brassard, 1984), using **photon polarization states** to generate secure keys. | [Comprehensive Study of BB84](https://www.researchgate.net/publication/370040044_Comprehensive_Study_of_BB84_A_Quantum_Key_Distribution_Protocol) |
+| **E91**  | Uses **entangled photon pairs** and Bell inequality tests for security verification, resistant to eavesdropping. | [Wikipedia - E91 Protocol](https://en.wikipedia.org/wiki/Quantum_key_distribution#E91_protocol:_Artur_Ekert_.281991.29) |
+| **MDI-QKD** | Measurement-Device-Independent QKD eliminates detector side-channel attacks via a **Bell-state measurement (BSM)** node. | [arXiv:1109.1473](https://arxiv.org/abs/1109.1473) |
+
+---
+
+## 🌐 Simulation Network Setup
+
+The simulations are configured for a **10 km optical fiber channel** between **Alice** and **Bob**, with the following roles:
+
+- **Alice**: Prepares and transmits qubits using a quantum processor.  
+- **Bob**: Measures incoming qubits using a quantum processor.  
+- **Charlie (MDI-QKD)**: Performs **Bell-State Measurement (BSM)** to detect entanglement using a **CNOT + Hadamard measurement** sequence.  
+- **Entanglement Source**: Generates entangled photon pairs for protocols like E91.  
+- **Bell Parameter**: Derived from CHSH Bell inequality tests to verify non-classical correlations.  
+
+---
+
+## ⚙️ Realistic Physical Models
+
+This project includes **advanced noise and device models** to simulate real-world constraints:
+
+| Model                              | Description |
+|-----------------------------------|-------------|
+| **Fiber Delay Model**             | Simulates finite speed of light in optical fiber (`c = 2 × 10^5 km/s`). |
+| **Fiber Loss Model**              | Implements probabilistic qubit loss (`p_loss_length = 0.2`, meaning **0.2 dB/km attenuation**). |
+| **Depolarization Noise Model**    | Applies qubit depolarization noise (`depolar_rate = 0.01`). |
+| **Classical Communication**       | Simulates **basis exchange messages** and tracks **communication overhead**. |
+| **Random Basis Generator**        | Creates random basis sequences for Alice and Bob (0/1 bit encoding). |
+| **Bell-State Measurement (BSM)**  | Charlie node detects entangled states via **CNOT-Hadamard measurement sequences**. |
+
+These features allow **realistic performance evaluation** of QKD protocols in fiber networks.
 
 ---
 
 ## 📊 Performance Metrics
 
-The simulation measures multiple **network and protocol performance indicators**:
-
 | Metric                        | Definition |
 |-------------------------------|-----------|
-| **Throughput (qubits/sec)**  | Number of qubits successfully transmitted per second. Higher throughput means more efficient communication. |
-| **Synchronization Time (ms)**| Time to align sender and receiver in BB84. Lower is better for secure setup speed. |
-| **Raw Key Rate (qubits)**    | Amount of raw key material generated before error correction. |
-| **QBER (%)**                 | Quantum Bit Error Rate. Lower QBER indicates higher channel quality. |
-| **Latency (ms)**             | Overall delay in qubit transmission and key generation. |
+| **Throughput (qubits/sec)**  | Number of successfully transmitted qubits per second. |
+| **Synchronization Time (ms)**| Time required to synchronize Alice and Bob’s measurement bases. |
+| **Raw Key Rate (qubits)**    | Amount of raw key material before error correction. |
+| **QBER (%)**                 | Quantum Bit Error Rate; lower values indicate better channel quality. |
+| **Latency (ms)**             | Total delay in qubit transmission and key generation. |
 | **Communication Overhead**   | Number of classical messages exchanged for authentication and error correction. |
-| **Channel Loss Rate (%)**    | Fraction of qubits lost during transmission. |
+| **Channel Loss Rate (%)**    | Percentage of qubits lost during transmission. |
 
 ---
 
 ## 🗂 Repository Structure
 
-This repository contains **two simulation sets**:
-
 | Set                  | Description |
 |----------------------|------------|
-| **Advanced Set**     | Modular implementation with physical-level customization of devices, channels, and protocol logic. Suitable for **detailed research** and hardware-level analysis. |
-| **Basic Set**        | Single-file implementations for **quick demonstrations** and testing. Easier for beginners to modify and run. |
+| **Advanced Set**     | Modular implementation with **device-level customization** and **detailed noise models**. Ideal for research experiments. |
+| **Basic Set**        | Lightweight, single-file implementations for quick **demonstrations and testing**. Beginner-friendly. |
 
-Each simulation can **plot performance results** (e.g., QBER, throughput) for a **10 km fiber link between Alice and Bob**.
+Both sets support **performance visualization** with **plots** (e.g., QBER, throughput) for a **10 km optical link**.
 
 ---
 
-## ⚙️ Technical Details
+## 🔧 Technical Details
 
 - **Simulator**: [NetSquid](https://netsquid.org/)  
 - **NetSquid Version Used**: `1.1.1`  
 - **Programming Language**: Python 3.x  
-- **Dependencies**: `netsquid`, `numpy`, `matplotlib`, and other scientific libraries  
-
----
-
-## 📈 Example Use Case
-
-This repository is ideal for:
-- Researchers exploring **QKD performance under realistic channel conditions**
-- Students learning **quantum networking fundamentals**
-- Security professionals evaluating **QKD feasibility in TLS and VPN systems**
-- Rapid prototyping of **future quantum network protocols**
+- **Core Dependencies**:  
+  - `netsquid`  
+  - `numpy`  
+  - `matplotlib`  
 
 ---
 
